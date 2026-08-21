@@ -5,48 +5,49 @@ const path = require('path');
 
 dotenv.config();
 
-// Create connection pool
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || '127.0.0.1',
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'website_electron',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT || 3306),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
   multipleStatements: true
 });
 
-// Function to initialize database and tables automatically if missing
 async function initDb() {
+  let conn;
+
   try {
-    // 1. Check/create database if it doesn't exist
-    const rootConn = await mysql.createConnection({
-      host: process.env.DB_HOST || '127.0.0.1',
-      port: process.env.DB_PORT || 3306,
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || ''
-    });
+    conn = await pool.getConnection();
 
-    const dbName = process.env.DB_NAME || 'website_electron';
-    await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    await rootConn.end();
+    console.log(
+      `[Database] Connected successfully to MySQL database: "${process.env.DB_NAME}"`
+    );
 
-    // 2. Test pool connection & run schema
-    const conn = await pool.getConnection();
-    console.log(`[Database] Connected successfully to MySQL database: "${dbName}"`);
-
+    // Optional: run schema.sql
     const schemaPath = path.join(__dirname, 'schema.sql');
+
     if (fs.existsSync(schemaPath)) {
       const sql = fs.readFileSync(schemaPath, 'utf8');
-      await conn.query(sql);
-      console.log('[Database] Database tables & seed data initialized successfully.');
+
+      if (sql.trim()) {
+        await conn.query(sql);
+        console.log('[Database] Tables initialized successfully.');
+      }
     }
 
-    conn.release();
   } catch (error) {
-    console.error('[Database Error] Failed to connect or initialize MySQL:', error.message);
+    console.error(
+      '[Database Error]',
+      error.message
+    );
+  } finally {
+    if (conn) {
+      conn.release();
+    }
   }
 }
 
