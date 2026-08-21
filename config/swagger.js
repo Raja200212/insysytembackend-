@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://0wl1gi6h80.preview.c40.airoapp.ai/?airoShareToken=MbaFhq9VgwBK&preview=1:20010',
+        url: 'https://0wl1gi6h80.preview.c40.airoapp.ai',
         description: 'Local Development Server',
       },
     ],
