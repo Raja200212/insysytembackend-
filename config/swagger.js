@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: ''https://0wl1gi6h80.preview.c40.airoapp.ai',
+        url: 'https://0wl1gi6h80.preview.c40.airoapp.ai',
         description: 'Preview Proxy Server',
       },
       {
