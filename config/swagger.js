@@ -11,8 +11,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
-        description: 'Local Express Server',
+        url: ''https://0wl1gi6h80.preview.c40.airoapp.ai',
+        description: 'Preview Proxy Server',
       },
       {
         url: 'https://0wl1gi6h80.preview.c40.airoapp.ai',
