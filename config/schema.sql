@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `sale_price` DECIMAL(10, 2) NULL,
   `stock` INT NOT NULL DEFAULT 0,
   `image` VARCHAR(255) NULL,
-  `is_featured` TINYINT(1) DEFAULT 0,
+  `is_feature` TINYINT(1) DEFAULT 0,
   `is_deal` TINYINT(1) DEFAULT 0,
   `rating` DECIMAL(3, 2) DEFAULT 5.00,
   `status` ENUM('active', 'inactive') DEFAULT 'active',
